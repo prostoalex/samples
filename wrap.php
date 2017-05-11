@@ -38,22 +38,24 @@ function wrap ($string, $length) {
   $words3 = array();
   $x = 0;
 
+
   while ($x < count($words2)) {
     $current_word = $words2[$x];
 
     if (($x + 1) < count($words2)) {
+      // can we peek into the next word?
       $next_word = $words2[$x+1];
-      if (strlen($current_word . " " . $next_word . "\n") < $length) {
+
+      while (strlen($current_word . " " . $next_word) <= $length) {
         // we can fit the next word and then have some space left over
         $current_word .= " ";
         $current_word .= $next_word;
-        $x++;
+        $x++; //advance the pointer and then unload the next word
         continue;
       }
     }
 
-    // We're here because we're  either at a word that's too long
-    // or at the last element of the array, and need to move on
+    // We can no longer append to the $current_word
     $words3 []= $current_word;
     $x++;
   } //end of while
@@ -75,9 +77,22 @@ function wrap_testEmpty() {
   print wrap('abcdef', 0);
 }
 
+function wrap_testBreakLongAndWrap() {
+  // a long word followed by a short word - the long word would be broken, but
+  // the short word should stay appended
+  print wrap('abcdef a abcdef b abcdef c', 5);
+}
+
+function wrap_testDuplets(){
+  print wrap('ab cd ef gh ij kl', 5);
+}
+
+
 wrap_testEmpty();
 wrap_testNormal(3);
 wrap_testNormal(5);
 wrap_testNormal(10);
 wrap_testNormal(15);
 wrap_testVeryLong();
+wrap_testBreakLongAndWrap();
+wrap_testDuplets();
