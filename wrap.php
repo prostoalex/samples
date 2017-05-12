@@ -16,7 +16,6 @@ function wrap ($string, $length) {
 
   // Pass 2: break down any words longer than $length
   $words2 = array();
-
   foreach ($words as $word) {
     $word = trim($word);
     if (strlen($word) < 1) {
@@ -36,36 +35,36 @@ function wrap ($string, $length) {
 
   // Pass 3: combine the $words2 into lines of appropriate length
   $words3 = array();
-  $x = 0;
-
-
-  while ($x < count($words2)) {
-    $current_word = $words2[$x];
-
-    if (($x + 1) < count($words2)) {
-      // can we peek into the next word?
-      $next_word = $words2[$x+1];
-
-      while (strlen($current_word . " " . $next_word) <= $length) {
-        // we can fit the next word and then have some space left over
-        $current_word .= " ";
-        $current_word .= $next_word;
-        $x++; //advance the pointer and then unload the next word
-        continue;
-      }
-    }
-
-    // We can no longer append to the $current_word
-    $words3 []= $current_word;
-    $x++;
+  while (count($words2)) {
+    $words3 []= return_at_most($words2, $length);
   } //end of while
 
-  $result = implode("\n", $words3)."\n";
+  $result = implode("\n", $words3)."\n"; // trailing newline
   return $result;
 }
 
+function return_at_most (&$string_arr, $max_length) {
+    $current = '';
+    $next = '';
+
+    $current = array_shift($string_arr);
+
+    while ($next = array_shift($string_arr)) {
+      if (strlen ($current . " " . $next) <= $max_length ) {
+        $current .= ' ' . $next;
+      } else {
+        // we're here because the length of the combined entity exceeds max_length
+        array_unshift($string_arr, $next);
+        return $current;
+      }
+    }
+
+    // we're here because there are no more elements left in $string_arr
+    return $current;
+}
+
 function wrap_testNormal($length) {
- print wrap("Hello there, how are you, this is a normal test with words of various lengths", $length);
+ print wrap("one two three four five six seven eight nine ten eleven twelve thirteen fourteeen fifteen", $length);
 }
 
 function wrap_testVeryLong() {
