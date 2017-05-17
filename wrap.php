@@ -116,12 +116,17 @@ function wrap_testDuplets(){
   print wrap('ab cd ef gh ij kl', 5);
 }
 
-function testProperWrapping() {
+function wrap_testProperWrapping() {
   // There are 5 spaces between each word and the trailing spaces
   print wrap('a     bcbcbcbc     dedededede     fgffgfgfgfg    ', 7);
 }
 
-//testProperWrapping();
+function wrap_testSpaces() {
+  print wrap('a   b c   d e   f', 5);
+}
+
+//wrap_testSpaces();
+//wrap_testProperWrapping();
 //wrap_testEmpty();
 //wrap_testNormal(3);
 //wrap_testNormal(5);
