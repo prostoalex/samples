@@ -42,8 +42,8 @@ function wrap ($string, $length) {
     }
   }
 
-  if (rtrim($current_line)) { // we have something left over, and it's not space
-    $result_arr []= rtrim($current_line);
+  if (strlen($current_line)) { // we have something left over, and it's not space
+    $result_arr []= $current_line;
   }
 
   return implode("\n", $result_arr);
@@ -76,7 +76,7 @@ function tokenize ($str) {
     }
   }
   // the for loop has ended, load whatever the remains onto the result
-  if ($current_word) {
+  if (strlen($current_word)) {
     $result[] = $current_word;
     $current_word = '';
   }
@@ -125,6 +125,22 @@ function wrap_testSpaces() {
   print wrap('a   b c   d e   f', 5);
 }
 
+function wrap_testNothingButZeros() {
+  print wrap('0', 2)."\n";
+  print wrap('0', 5)."\n";
+  print wrap('000', 5)."\n";
+}
+
+function wrap_testTrailingSpaces() {
+  $str = 'hello there          ';
+  print strlen(wrap($str, 50)) == strlen($str) ?
+    'wrap_testTrailingSpaces passed' :
+    'wrap_testTrailingSpaces failed';
+    // just ensure we're not modifying the trailing spaces
+}
+
+//wrap_testNothingButZeros();
+//wrap_testTrailingSpaces();
 //wrap_testSpaces();
 //wrap_testProperWrapping();
 //wrap_testEmpty();
